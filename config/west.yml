@@ -3,28 +3,23 @@ manifest:
     # zmk official
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-      # bravekarma
-    - name: caksoylar
-      url-base: https://github.com/caksoylar
-      # kyek / duckyb
+    # urchin shield definitions (left / right halves)
     - name: duckyb
       url-base: https://github.com/duckyb
-      # nice-view-gem
-    - name: m165437
-      url-base: https://github.com/M165437
+    # prospector display dongle
+    - name: carrefinho
+      url-base: https://github.com/carrefinho
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: v0.3.0
+      revision: main
       import: app/west.yml
     - name: urchin-zmk-module
       remote: duckyb
       revision: main
-    - name: nice-view-gem
-      remote: m165437
-      revision: main
-    - name: zmk-rgbled-widget
-      remote: caksoylar
-      revision: main
+    # Zephyr 4.1 / ZMK main compatible branch (work in progress upstream)
+    - name: prospector-zmk-module
+      remote: carrefinho
+      revision: feat/new-status-screens
   self:
     path: config

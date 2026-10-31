@@ -1,23 +1,22 @@
-# This file generates the GitHub Actions matrix
-# For simple board + shield combinations, add them
-# to the top level board and shield arrays, for more
-# control, add individual board + shield combinations to
-# the `include` property, e.g:
+# Urchin with a Prospector dongle as split central.
 #
-# board: [ "nice_nano_v2" ]
-# shield: [ "corne_left", "corne_right" ]
-# include:
-#   - board: bdn9_rev2
-#   - board: nice_nano_v2
-#     shield: reviung41
+# The dongle (Seeed XIAO BLE in a Prospector) is the central and the only part
+# that talks to the host. Both halves are peripherals, with no display or LEDs.
 #
+# Flash settings_reset to all three devices before first use.
 ---
 include:
-  - board: nice_nano_v2
-    shield: urchin_left nice_view_adapter  nice_view_gem
+  - board: xiao_ble//zmk
+    shield: urchin_dongle prospector_adapter
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_STUDIO=y
-  - board: nice_nano_v2
-    shield: urchin_right nice_view_adapter nice_view_gem
-  - board: nice_nano_v2
+    artifact-name: urchin_dongle_prospector
+  - board: nice_nano//zmk
+    shield: urchin_left
+    cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+  - board: nice_nano//zmk
+    shield: urchin_right
+  - board: nice_nano//zmk
+    shield: settings_reset
+  - board: xiao_ble//zmk
     shield: settings_reset

@@ -1,5 +1,15 @@
 Firmware for: [Urchin Keyboard](https://github.com/duckyb/urchin)
 
+> [!NOTE]
+> This branch (`prospector-dongle`) builds on ZMK `main` with a
+> [Prospector](https://github.com/carrefinho/prospector) dongle as split central.
+> Both halves are peripherals with no display or LEDs.
+>
+> 1. Flash `settings_reset` to the dongle (`xiao_ble`) and both halves (`nice_nano`).
+> 2. Flash `urchin_dongle_prospector` to the dongle, then `urchin_left` and `urchin_right`.
+> 3. Power on the left half first, then the right, so the dongle's battery display is ordered left to right.
+> 4. Pair your computer with the dongle (plug it in over USB, or pair over Bluetooth as "urchin").
+
 ## Getting started
 
 **Are you trying to make your own ZMK firmware?**  
