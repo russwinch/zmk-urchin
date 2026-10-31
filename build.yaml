@@ -20,3 +20,11 @@ include:
     shield: settings_reset
   - board: xiao_ble//zmk
     shield: settings_reset
+  # Debug: right half with logging over USB serial. Flash this instead of
+  # urchin_right, keep it plugged in, and read logs with e.g.
+  #   screen /dev/tty.usbmodem* 115200   (macOS)   or   tio /dev/ttyACM0  (Linux)
+  # Debug only: it never sleeps while on USB. Reflash urchin_right afterwards.
+  - board: nice_nano//zmk
+    shield: urchin_right
+    snippet: zmk-usb-logging
+    artifact-name: urchin_right_usb_logging
