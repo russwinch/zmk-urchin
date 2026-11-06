@@ -33,7 +33,7 @@ This config builds firmware for both the **Urchin** and the **Forager**
 
 | File | Purpose |
 | --- | --- |
-| `config/keymap.dtsi` | Shared layers, combos and behaviors. Edit this one. |
+| `config/keymap.dtsi` | Shared layers and behaviors. Edit this one. |
 | `config/urchin.keymap` | Urchin-only hardware (LED node), then includes `keymap.dtsi` |
 | `config/forager.keymap` | Includes `keymap.dtsi` (LED comes from the `rgbled_adapter` shield) |
 | `config/<shield>.conf` | Per-keyboard Kconfig (display, sleep, etc.) |
