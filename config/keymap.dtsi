@@ -20,6 +20,11 @@
 #define L_RAI   2
 #define L_TRI   3
 
+// key positions by hand, for hold-trigger-key-positions
+#define KEYS_L  0 1 2 3 4 10 11 12 13 14 20 21 22 23 24
+#define KEYS_R  5 6 7 8 9 15 16 17 18 19 25 26 27 28 29
+#define THUMBS  30 31 32 33
+
 #define XXX     &none
 #define ___     &trans
 
@@ -55,7 +60,7 @@
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             bindings = <&kp>, <&kp>;
-            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 25 26 27 28 29 35 36 37 38 39 >; // List of keys on the right side of the keyboard
+            hold-trigger-key-positions = <KEYS_R THUMBS>; // opposite hand + thumbs
             hold-trigger-on-release;
         };
         hmr: home_row_mod_right {
@@ -66,7 +71,7 @@
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             bindings = <&kp>, <&kp>;
-            hold-trigger-key-positions = < 0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 30 31 32 33 34 >; // List of keys on the left side of the keyboard
+            hold-trigger-key-positions = <KEYS_L THUMBS>; // opposite hand + thumbs
             hold-trigger-on-release;
         };
     };
@@ -97,7 +102,7 @@
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                               ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
    &kp Z         &kp X         &kp C         &kp V         &kp B                                         &kp N         &kp M         &kp COMMA     &kp DOT       &kp FSLH               // 20-24 | 25-29
 //╰─────────────┴─────────────┴─────────────┴─────────────┴─────────────┤  ╭────────────╮  ╭───────────╮├─────────────┼─────────────┼─────────────┴─────────────┼─────────────╯
-                   							 &lt L_LOW ESC &mt LGUI BSPC             					 &mt RSHFT SPACE &lt L_RAI RET                            // 30-34 | 35-39
+                   							 &lt L_LOW ESC &mt LGUI BSPC             					 &mt RSHFT SPACE &lt L_RAI RET                            // 30-31 | 32-33
 //               ╰──────────╯ ╰─────────────┴─────────────┴─────────────╯  ╰────────────╯  ╰───────────╯╰─────────────┴─────────────┴─────────────╯ ╰──────────╯
                         >;
                 };
