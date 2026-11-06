@@ -30,7 +30,7 @@
 #define KB_LAYOUT_BASE(...) CORNE(&kp C_MUTE, &kp C_PP, __VA_ARGS__)
 #define KB_LAYOUT(...)      CORNE(___, ___, __VA_ARGS__)
 
-#define SENSORS       sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp UP DN>;
+#define SENSORS       sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp UP DOWN>;
 #define SENSORS_LOWER sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp PG_UP PG_DN>;
 
 #include "keymap.dtsi"
