@@ -1,29 +1,32 @@
 /*
- * Shared keymap for all 34-key boards in this repo (Urchin, Forager).
- * Each <shield>.keymap includes this file; put board-specific hardware
- * (e.g. LED nodes) in the board's own .keymap, not here.
+ * Shared keymap: every board in this repo uses these layers.
  *
- * Key positions (identical on Urchin and Forager):
- *    0  1  2  3  4      5  6  7  8  9
- *   10 11 12 13 14     15 16 17 18 19
- *   20 21 22 23 24     25 26 27 28 29
- *            30 31     32 33
+ * Each layer is written once as the 34 "core" keys (3x10 + 4 thumbs):
+ *
+ *    k00 k01 k02 k03 k04    k05 k06 k07 k08 k09
+ *    k10 k11 k12 k13 k14    k15 k16 k17 k18 k19
+ *    k20 k21 k22 k23 k24    k25 k26 k27 k28 k29
+ *                k30 k31    k32 k33
+ *
+ * Before including this file, each <shield>.keymap must define:
+ *   KB_LAYOUT_BASE(34 keys)  maps core keys onto the board for the base layer
+ *                            (fills extra keys: encoder pushes, outer thumbs...)
+ *   KB_LAYOUT(34 keys)       same, for every other layer (extras usually ___)
+ *   KEYS_L / KEYS_R / THUMBS  physical key positions, for home-row mods
+ * and may define SENSORS / SENSORS_LOWER (encoder bindings).
  */
 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include <behaviors/rgbled_widget.dtsi>
 
 // layers
 #define L_MAC   0
-#define L_LOW   1
-#define L_RAI   2
-#define L_TRI   3
-
-// key positions by hand, for hold-trigger-key-positions
-#define KEYS_L  0 1 2 3 4 10 11 12 13 14 20 21 22 23 24
-#define KEYS_R  5 6 7 8 9 15 16 17 18 19 25 26 27 28 29
-#define THUMBS  30 31 32 33
+#define L_WIN   1
+#define L_LOW   2
+#define L_RAI   3
+#define L_TRI   4
 
 #define XXX     &none
 #define ___     &trans
@@ -37,6 +40,13 @@
 #define M_WINS  &kp LC(DOWN)
 #define M_GBP   &kp LA(3)
 
+// boards without encoders get no sensor-bindings
+#ifndef SENSORS
+#define SENSORS
+#endif
+#ifndef SENSORS_LOWER
+#define SENSORS_LOWER SENSORS
+#endif
 
 &mt {
     quick-tap-ms = <199>;
@@ -48,7 +58,6 @@
     tapping-term-ms = <150>;
     flavor = "hold-preferred";
 };
-
 
 / {
     behaviors {
@@ -87,56 +96,63 @@
     };
 };
 
-
 / {
-        keymap {
-                compatible = "zmk,keymap";
+    keymap {
+        compatible = "zmk,keymap";
 
-                mac_layer {
-                        display-name = "Mac";
-                        bindings = <
-//╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                               ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
-   &kp Q         &kp W         &kp E         &kp R         &kp T                                         &kp Y         &kp U         &kp I         &kp O         &kp P                  // 0-4   | 5-9
-//├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                               ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-   &hml LCTRL A  &hml LALT S   &hml LGUI D   &hml LSHFT F  &kp G                                         &kp H         &hmr RSHFT J  &hmr RGUI K   &hmr RALT L  &hmr RCTRL SEMI         // 10-14 | 15-19
-//├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                               ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-   &kp Z         &kp X         &kp C         &kp V         &kp B                                         &kp N         &kp M         &kp COMMA     &kp DOT       &kp FSLH               // 20-24 | 25-29
-//╰─────────────┴─────────────┴─────────────┴─────────────┴─────────────┤  ╭────────────╮  ╭───────────╮├─────────────┼─────────────┼─────────────┴─────────────┼─────────────╯
-                   							 &lt L_LOW ESC &mt LGUI BSPC             					 &mt RSHFT SPACE &lt L_RAI RET                            // 30-31 | 32-33
-//               ╰──────────╯ ╰─────────────┴─────────────┴─────────────╯  ╰────────────╯  ╰───────────╯╰─────────────┴─────────────┴─────────────╯ ╰──────────╯
-                        >;
-                };
-                lower_mac_layer {
-                        display-name = "Lower";
-                        bindings = <
-   XXX        XXX      M_GBP      M_PTAB     M_NTAB            &kp PLUS   &kp MINUS  &kp UNDER  &kp PIPE    &kp BSLH
-   &kp C_PREV &kp C_PP &kp C_NEXT M_PDSK     M_NDSK            &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT   &kp SQT 
-   XXX        XXX      &kp PSCRN  M_CTRL     M_WINS            XXX        XXX        XXX        &kp EQUAL   &kp DQT 
-                      			  ___        ___        	   &kp DEL    ___        
-                        >;
-                };
-                raise_layer {
-                        display-name = "Raise";
-                        bindings = <
-   &kp EXCL  &kp AT    &kp HASH &kp DLLR &kp PRCNT        &kp CARET &kp AMPS &kp ASTRK &kp LPAR &kp RPAR
-   &kp N1    &kp N2    &kp N3   &kp N4   &kp N5           &kp N6    &kp N7   &kp N8    &kp N9   &kp N0  
-   &kp TILDE &kp GRAVE &kp LPAR &kp LBRC &kp LBKT         &kp RBKT  &kp RBRC &kp RPAR  &kp DOT  &kp RET 
-                   						 ___ &kp TAB   	  ___ ___
-                        >;
-                };
-                tri_layer {
-                        display-name = "Shit";
-                        bindings = <
-//╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                               ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
-    XXX           XXX           XXX           XXX           XXX                                           XXX           XXX           XXX           XXX           XXX
-//├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                               ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    XXX           XXX           XXX           XXX           XXX                                           XXX           XXX           XXX           XXX           XXX
-//├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                               ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    &kp C_PWR     XXX           XXX           XXX           XXX                                           &bt BT_PRV    &bt BT_NXT    XXX           XXX           &bt BT_CLR
-//╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤  ╭────────────╮  ╭───────────╮├─────────────┼─────────────┼─────────────┴─────────────┼─────────────╯
-                            				  ___           ___                       					  ___           ___          
-//                            ╰─────────────┴─────────────┴─────────────╯  ╰────────────╯  ╰───────────╯╰─────────────┴─────────────┴─────────────╯
-                        >;
-                };
+        mac_layer {
+            display-name = "Mac";
+            bindings = <KB_LAYOUT_BASE(
+    &kp Q,        &kp W,        &kp E,        &kp R,        &kp T,           &kp Y,        &kp U,        &kp I,        &kp O,        &kp P,
+    &hml LCTRL A, &hml LALT S,  &hml LGUI D,  &hml LSHFT F, &kp G,           &kp H,        &hmr RSHFT J, &hmr RGUI K,  &hmr RALT L,  &hmr RCTRL SEMI,
+    &kp Z,        &kp X,        &kp C,        &kp V,        &kp B,           &kp N,        &kp M,        &kp COMMA,    &kp DOT,      &kp FSLH,
+                                &lt L_LOW ESC, &mt LGUI BSPC,                 &mt RSHFT SPACE, &lt L_RAI RET
+            )>;
+            SENSORS
         };
+
+        windows_layer {
+            display-name = "Windows";
+            bindings = <KB_LAYOUT(
+    ___,          ___,          ___,          ___,          ___,             ___,          ___,          ___,          ___,          ___,
+    &hml LGUI A,  ___,          &hml LCTRL D, ___,          ___,             ___,          ___,          &hmr RCTRL K, ___,          &hmr RGUI SEMI,
+    ___,          ___,          ___,          ___,          ___,             ___,          ___,          ___,          ___,          ___,
+                                ___,          &mt LCTRL BSPC,                ___,          ___
+            )>;
+            SENSORS
+        };
+
+        lower_layer {
+            display-name = "Lower";
+            bindings = <KB_LAYOUT(
+    XXX,          XXX,          M_GBP,        M_PTAB,       M_NTAB,          &kp PLUS,     &kp MINUS,    &kp UNDER,    &kp PIPE,     &kp BSLH,
+    &kp C_PREV,   &kp C_PP,     &kp C_NEXT,   M_PDSK,       M_NDSK,          &kp LEFT,     &kp DOWN,     &kp UP,       &kp RIGHT,    &kp SQT,
+    XXX,          XXX,          &kp PSCRN,    M_CTRL,       M_WINS,          XXX,          XXX,          XXX,          &kp EQUAL,    &kp DQT,
+                                ___,          ___,                           &kp DEL,      ___
+            )>;
+            SENSORS_LOWER
+        };
+
+        raise_layer {
+            display-name = "Raise";
+            bindings = <KB_LAYOUT(
+    &kp EXCL,     &kp AT,       &kp HASH,     &kp DLLR,     &kp PRCNT,       &kp CARET,    &kp AMPS,     &kp ASTRK,    &kp LPAR,     &kp RPAR,
+    &kp N1,       &kp N2,       &kp N3,       &kp N4,       &kp N5,          &kp N6,       &kp N7,       &kp N8,       &kp N9,       &kp N0,
+    &kp TILDE,    &kp GRAVE,    &kp LPAR,     &kp LBRC,     &kp LBKT,        &kp RBKT,     &kp RBRC,     &kp RPAR,     &kp DOT,      &kp RET,
+                                ___,          &kp TAB,                       ___,          ___
+            )>;
+            SENSORS
+        };
+
+        tri_layer {
+            display-name = "Tri";
+            bindings = <KB_LAYOUT(
+    XXX,          XXX,          XXX,          XXX,          XXX,             XXX,          XXX,          XXX,          XXX,          XXX,
+    XXX,          XXX,          XXX,          XXX,          XXX,             XXX,          XXX,          XXX,          XXX,          XXX,
+    &kp C_PWR,    &to L_MAC,    &to L_WIN,    XXX,          &ind_bat,        &bt BT_PRV,   &bt BT_NXT,   XXX,          XXX,          &bt BT_CLR,
+                                ___,          ___,                           ___,          ___
+            )>;
+            SENSORS
+        };
+    };
 };

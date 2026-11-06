@@ -1,33 +1,23 @@
- /*
- * Copyright (c) 2022 The ZMK Contributors
- *
- * SPDX-License-Identifier: MIT
- */
-
 /*
- * Urchin: board-specific bits only. Layers/behaviors live in keymap.dtsi.
+ * Urchin: 34 keys. Layers live in keymap.dtsi.
+ *
+ *    0  1  2  3  4      5  6  7  8  9
+ *   10 11 12 13 14     15 16 17 18 19
+ *   20 21 22 23 24     25 26 27 28 29
+ *            30 31     32 33
  */
 
-/ {
-    aliases {
-        led-red = &led0;
-        led-green = &led1;
-        led-blue = &led2;
-    };
+#include "leds_nice_nano_rgb.dtsi"
 
-    leds {
-        compatible = "gpio-leds";
-        status = "okay";
-        led0: led_0 {
-            gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;  // red LED, connected to P1.07
-        };
-        led1: led_1 {
-            gpios = <&gpio1 2 GPIO_ACTIVE_LOW>;  // green LED, connected to P1.02
-        };
-        led2: led_2 {
-            gpios = <&gpio1 1 GPIO_ACTIVE_LOW>;  // blue LED, connected to P1.01
-        };
-    };
-};
+#define KEYS_L  0 1 2 3 4 10 11 12 13 14 20 21 22 23 24
+#define KEYS_R  5 6 7 8 9 15 16 17 18 19 25 26 27 28 29
+#define THUMBS  30 31 32 33
+
+#define KB_LAYOUT(k00, k01, k02, k03, k04, k05, k06, k07, k08, k09, k10, k11, k12, k13, k14, k15, k16, k17, k18, k19, k20, k21, k22, k23, k24, k25, k26, k27, k28, k29, k30, k31, k32, k33) \
+    k00 k01 k02 k03 k04  k05 k06 k07 k08 k09 \
+    k10 k11 k12 k13 k14  k15 k16 k17 k18 k19 \
+    k20 k21 k22 k23 k24  k25 k26 k27 k28 k29 \
+                k30 k31  k32 k33
+#define KB_LAYOUT_BASE KB_LAYOUT
 
 #include "keymap.dtsi"
