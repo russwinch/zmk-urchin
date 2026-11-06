@@ -12,6 +12,9 @@ manifest:
       # nice-view-gem
     - name: m165437
       url-base: https://github.com/M165437
+      # forager
+    - name: carrefinho
+      url-base: https://github.com/carrefinho
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -20,11 +23,17 @@ manifest:
     - name: urchin-zmk-module
       remote: duckyb
       revision: main
+    - name: forager-zmk-module
+      remote: carrefinho
+      # pinned: upstream main may move to newer ZMK/Zephyr board names
+      revision: 3cafe6b7b26d7b538949e138fc00a148def4b2ed
+    # These modules' main branches target ZMK main (Zephyr 4.1+);
+    # their v0.3 refs match our pinned ZMK v0.3.0.
     - name: nice-view-gem
       remote: m165437
-      revision: main
+      revision: v0.3.0
     - name: zmk-rgbled-widget
       remote: caksoylar
-      revision: main
+      revision: v0.3
   self:
     path: config

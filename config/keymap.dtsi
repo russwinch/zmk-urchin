@@ -1,0 +1,137 @@
+/*
+ * Shared keymap for all 34-key boards in this repo (Urchin, Forager).
+ * Each <shield>.keymap includes this file; put board-specific hardware
+ * (e.g. LED nodes) in the board's own .keymap, not here.
+ *
+ * Key positions (identical on Urchin and Forager):
+ *    0  1  2  3  4      5  6  7  8  9
+ *   10 11 12 13 14     15 16 17 18 19
+ *   20 21 22 23 24     25 26 27 28 29
+ *            30 31     32 33
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+
+// layers
+#define L_MAC   0
+#define L_LOW   1
+#define L_RAI   2
+#define L_TRI   3
+
+#define XXX     &none
+#define ___     &trans
+
+// mac
+#define M_PTAB  &kp LG(LA(LEFT))
+#define M_NTAB  &kp LG(LA(RIGHT))
+#define M_PDSK  &kp LC(LEFT)
+#define M_NDSK  &kp LC(RIGHT)
+#define M_CTRL  &kp LC(UP)
+#define M_WINS  &kp LC(DOWN)
+#define M_GBP   &kp LA(3)
+
+
+&mt {
+    quick-tap-ms = <199>;
+    tapping-term-ms = <250>;
+    flavor = "tap-preferred";
+};
+
+&lt {
+    tapping-term-ms = <150>;
+    flavor = "hold-preferred";
+};
+
+
+/ {
+    behaviors {
+        hml: home_row_mod_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            require-prior-idle-ms = <150>;
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 25 26 27 28 29 35 36 37 38 39 >; // List of keys on the right side of the keyboard
+            hold-trigger-on-release;
+        };
+        hmr: home_row_mod_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            require-prior-idle-ms = <150>;
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = < 0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 30 31 32 33 34 >; // List of keys on the left side of the keyboard
+            hold-trigger-on-release;
+        };
+    };
+};
+
+/ {
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <L_LOW L_RAI>;
+            then-layer = <L_TRI>;
+        };
+    };
+};
+
+
+/ {
+        keymap {
+                compatible = "zmk,keymap";
+
+                mac_layer {
+                        display-name = "Mac";
+                        bindings = <
+//╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                               ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
+   &kp Q         &kp W         &kp E         &kp R         &kp T                                         &kp Y         &kp U         &kp I         &kp O         &kp P                  // 0-4   | 5-9
+//├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                               ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+   &hml LCTRL A  &hml LALT S   &hml LGUI D   &hml LSHFT F  &kp G                                         &kp H         &hmr RSHFT J  &hmr RGUI K   &hmr RALT L  &hmr RCTRL SEMI         // 10-14 | 15-19
+//├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                               ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+   &kp Z         &kp X         &kp C         &kp V         &kp B                                         &kp N         &kp M         &kp COMMA     &kp DOT       &kp FSLH               // 20-24 | 25-29
+//╰─────────────┴─────────────┴─────────────┴─────────────┴─────────────┤  ╭────────────╮  ╭───────────╮├─────────────┼─────────────┼─────────────┴─────────────┼─────────────╯
+                   							 &lt L_LOW ESC &mt LGUI BSPC             					 &mt RSHFT SPACE &lt L_RAI RET                            // 30-34 | 35-39
+//               ╰──────────╯ ╰─────────────┴─────────────┴─────────────╯  ╰────────────╯  ╰───────────╯╰─────────────┴─────────────┴─────────────╯ ╰──────────╯
+                        >;
+                };
+                lower_mac_layer {
+                        display-name = "Lower";
+                        bindings = <
+   XXX        XXX      M_GBP      M_PTAB     M_NTAB            &kp PLUS   &kp MINUS  &kp UNDER  &kp PIPE    &kp BSLH
+   &kp C_PREV &kp C_PP &kp C_NEXT M_PDSK     M_NDSK            &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT   &kp SQT 
+   XXX        XXX      &kp PSCRN  M_CTRL     M_WINS            XXX        XXX        XXX        &kp EQUAL   &kp DQT 
+                      			  ___        ___        	   &kp DEL    ___        
+                        >;
+                };
+                raise_layer {
+                        display-name = "Raise";
+                        bindings = <
+   &kp EXCL  &kp AT    &kp HASH &kp DLLR &kp PRCNT        &kp CARET &kp AMPS &kp ASTRK &kp LPAR &kp RPAR
+   &kp N1    &kp N2    &kp N3   &kp N4   &kp N5           &kp N6    &kp N7   &kp N8    &kp N9   &kp N0  
+   &kp TILDE &kp GRAVE &kp LPAR &kp LBRC &kp LBKT         &kp RBKT  &kp RBRC &kp RPAR  &kp DOT  &kp RET 
+                   						 ___ &kp TAB   	  ___ ___
+                        >;
+                };
+                tri_layer {
+                        display-name = "Shit";
+                        bindings = <
+//╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮                               ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
+    XXX           XXX           XXX           XXX           XXX                                           XXX           XXX           XXX           XXX           XXX
+//├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                               ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+    XXX           XXX           XXX           XXX           XXX                                           XXX           XXX           XXX           XXX           XXX
+//├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤                               ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+    &kp C_PWR     XXX           XXX           XXX           XXX                                           &bt BT_PRV    &bt BT_NXT    XXX           XXX           &bt BT_CLR
+//╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤  ╭────────────╮  ╭───────────╮├─────────────┼─────────────┼─────────────┴─────────────┼─────────────╯
+                            				  ___           ___                       					  ___           ___          
+//                            ╰─────────────┴─────────────┴─────────────╯  ╰────────────╯  ╰───────────╯╰─────────────┴─────────────┴─────────────╯
+                        >;
+                };
+        };
+};

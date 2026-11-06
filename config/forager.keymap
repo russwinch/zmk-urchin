@@ -1,0 +1,13 @@
+/*
+ * Copyright (c) 2022 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+/*
+ * Forager: the onboard XIAO RGB LED is wired up by the rgbled_adapter shield
+ * (see build.yaml), so nothing board-specific is needed here.
+ * Layers/behaviors live in keymap.dtsi.
+ */
+
+#include "keymap.dtsi"
